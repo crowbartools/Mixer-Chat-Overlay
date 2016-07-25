@@ -19,15 +19,19 @@ var getUrlParameter = function getUrlParameter(sParam) {
 // Get User ID & start it up
 var username = getUrlParameter('username');
 $.getJSON( "https://beam.pro/api/v1/channels/"+username, function( data ) {
-  userID = data.id;
-  userPartner = data.partnered;
-  if (userPartner === true){
-  	subIcon = data.badge.url;
-  } else {
-  	subIcon = "";
-  } 
+	userID = data.id;
+	userPartner = data.partnered;
+	if (userPartner === true){
+		subIcon = data.badge.url;
+	} else {
+		subIcon = "";
+	} 
 
-  beamSocketConnect();
+	// Get chat endpoints after getting user ID.
+	$.getJSON( "https://beam.pro/api/v1/chats/"+userID, function( data ) {
+		var endpoints = data.endpoints
+		beamSocketConnect(endpoints);
+	});
 });
 
 // General Settings
@@ -36,11 +40,13 @@ timeToShowChat = chatTime; // in Milliseconds
 
 // CHAT
 // Connect to Beam Websocket
-function beamSocketConnect(){
+function beamSocketConnect(endpoints){
     if ("WebSocket" in window){
 
        // Let us open a web socket
-       var ws = new ReconnectingWebSocket("wss://chat2-dal.beam.pro:443");
+       var randomEndpoint = endpoints[Math.floor(Math.random()*endpoints.length)];
+       var ws = new ReconnectingWebSocket(randomEndpoint);
+       console.log('Connected to '+randomEndpoint);
 
        ws.onopen = function(){
           // Web Socket is connected, send data using send()
@@ -59,7 +65,7 @@ function beamSocketConnect(){
         chat(evt);
 
         // Debug - Log all chat events.
-        console.log(evt);
+        // console.log(evt);
        };
 
        ws.onclose = function(){
@@ -141,6 +147,6 @@ function errorHandle(ws){
     console.log('Ready State is '+wsState);
   } else {
     // Connection open, send keep alive.
-    ws.send(2);
+    ws.send('{"type": "method", "method": "ping", "arguments": [], "id": 12}');
   }
 }
