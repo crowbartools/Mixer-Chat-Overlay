@@ -8,8 +8,8 @@ Usage: <br>
 4. Make sure to customize the URL with your name.  <br>
 
 Themes:  <br>
-Original: http://firebottle.tv/mixerchatter/chat.html?username=YOURNAMEHERE&timer=8000  <br>
-Rockstar: http://firebottle.tv/mixerchatter/rockstar-theme/chat.html?username=YOURNAMEHERE&timer=8000  <br>
+Original: http://firebottle.tv/projects/mixerchatter/chat.html?username=YOURNAMEHERE&timer=8000  <br>
+Rockstar: http://firebottle.tv/projects/mixerchatter/rockstar-theme/chat.html?username=YOURNAMEHERE&timer=8000  <br>
 
 Settings:
 Just one setting right now! You can change the timer to have it show messages for different lengths of time. 1000 = one second. You can also set it to 0 to have messages never go away.
