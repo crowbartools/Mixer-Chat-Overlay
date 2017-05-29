@@ -18,7 +18,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 
 // Get User ID & start it up
 var username = getUrlParameter('username');
-$.getJSON( "https://beam.pro/api/v1/channels/"+username, function( data ) {
+$.getJSON( "https://Mixer.com/api/v1/channels/"+username, function( data ) {
 	userID = data.id;
 	userPartner = data.partnered;
 	if (userPartner === true){
@@ -28,9 +28,9 @@ $.getJSON( "https://beam.pro/api/v1/channels/"+username, function( data ) {
 	} 
 
 	// Get chat endpoints after getting user ID.
-	$.getJSON( "https://beam.pro/api/v1/chats/"+userID, function( data ) {
+	$.getJSON( "https://Mixer.com/api/v1/chats/"+userID, function( data ) {
 		var endpoints = data.endpoints
-		beamSocketConnect(endpoints);
+		mixerSocketConnect(endpoints);
 	});
 });
 
@@ -39,8 +39,8 @@ var chatTime = getUrlParameter('timer');
 timeToShowChat = chatTime; // in Milliseconds
 
 // CHAT
-// Connect to Beam Websocket
-function beamSocketConnect(endpoints){
+// Connect to mixer Websocket
+function mixerSocketConnect(endpoints){
     if ("WebSocket" in window){
 
        // Let us open a web socket
@@ -107,7 +107,7 @@ function chat(evt){
   		      var emoticonCoordX = this.coords.x;
   		      var emoticonCoordY = this.coords.y;
   		    	if (emoticonSource == "builtin"){
-  		    		completeMessage += '<div class="emoticon" style="background-image:url(https:\/\/beam.pro/_latest/emoticons/'+emoticonPack+'.png); background-position:-'+emoticonCoordX+'px -'+emoticonCoordY+'px; height:24px; width:24px; display:inline-block;"></div>';
+  		    		completeMessage += '<div class="emoticon" style="background-image:url(https:\/\/Mixer.com/_latest/emoticons/'+emoticonPack+'.png); background-position:-'+emoticonCoordX+'px -'+emoticonCoordY+'px; height:24px; width:24px; display:inline-block;"></div>';
   		    	} else if (emoticonSource == "external"){
   					completeMessage += '<div class="emoticon" style="background-image:url('+emoticonPack+'); background-position:-'+emoticonCoordX+'px -'+emoticonCoordY+'px; height:24px; width:24px; display:inline-block;"></div>';
   		    	}		    
