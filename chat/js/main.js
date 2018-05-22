@@ -16,23 +16,40 @@ var getUrlParameter = function getUrlParameter(sParam) {
     }
 };
 
+// Headers for ajax calls.
+function setHeader(xhr) {
+  xhr.setRequestHeader('Client-ID', '8682f64ae59cbcba5cd701c205b54b04a424b46ca064e563');
+}
+
 // Get User ID & start it up
 var username = getUrlParameter('username');
-$.getJSON( "https://Mixer.com/api/v1/channels/"+username, function( data ) {
-  userID = data.id;
-  userPartner = data.partnered;
-  if (userPartner === true){
-    subIcon = data.badge.url;
-  } else {
-    subIcon = "";
-  } 
+$.ajax({
+  url: "https://Mixer.com/api/v1/channels/"+username,
+  type: 'GET',
+  dataType: 'json',
+  beforeSend: setHeader,
+  success: function(data){
+    userID = data.id;
+    userPartner = data.partnered;
+    if (userPartner === true){
+      subIcon = data.badge.url;
+    } else {
+      subIcon = "";
+    } 
 
-  // Get chat endpoints after getting user ID.
-  $.getJSON( "https://Mixer.com/api/v1/chats/"+userID, function( data ) {
-    var endpoints = data.endpoints
-    mixerSocketConnect(endpoints);
-  });
-});
+    // Get our chat endpoints and connect to one.
+    $.ajax({
+      url: "https://Mixer.com/api/v1/chats/"+userID,
+      type: 'GET',
+      dataType: 'json',
+      beforeSend: setHeader,
+      success: function(data){
+        var endpoints = data.endpoints
+        mixerSocketConnect(endpoints);
+      }
+    })
+  }
+})
 
 // General Settings
 var chatTime = getUrlParameter('timer');
