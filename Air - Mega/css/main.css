@@ -1,0 +1,97 @@
+
+html, body{
+	background-color:transparent;
+	margin:0px;
+	padding:0px;
+}
+
+@keyframes slideIn {
+    0% {opacity: 0; margin-left: 40%;}
+    60% {margin-left: 0;}
+    70% {margin-left: 1%;}
+    100% {opacity: 1; }
+}
+
+.wrapper{
+	position:relative;
+	font-family: 'Roboto Mono', Verdana, Geneva, sans-serif;
+	font-size:20pt;
+	overflow:hidden;
+	color:white;
+	height:100vh;
+	width:100vw;
+}
+.error{
+	width:500px;
+	padding:10px;
+	border:1px solid black;
+	background-color:white;
+	color:black;
+	margin:auto;
+	text-align:center;
+	box-shadow: 2px 2px 2px #888888;
+}
+.chat{
+	color:black;
+	width:100%;
+	height: 100vh;
+	overflow:hidden;
+	font-size:.8em;
+	font-family: 'Roboto Mono', Verdana, Geneva, sans-serif;
+	position:absolute;
+	bottom:0px;
+	left:0px;
+}
+.chatmessage{
+	background-color:white;
+	margin:5px;
+	padding:40px;
+	border-radius: 20px;
+    box-shadow: 0 0 50px rgba(0,0,0,0.2);
+    margin: 15px;
+    animation-name: slideIn;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+}
+.chatusername{
+	font-family: 'Roboto Mono', Verdana, Geneva, sans-serif;
+	display:inline-block;
+	font-weight:bold;
+	
+	font-size: 1.15em;
+	border-bottom:1px solid white;
+	padding: 0px 0px 10px 0px;
+	margin: 0px 0px 10px 0px;
+	border-bottom: 3px solid lightblue;
+    width: 50px;
+
+}
+.emoticon{
+	position:relative;
+	top:5px;
+}
+.badge{
+	display:none
+}
+.chatusername.Subscriber .badge{
+	width:16px;
+	height:16px;
+	display:inline;
+}
+
+/** Role Colors **/
+.chatusername.User{
+	color: #37aad5;
+}
+.chatusername.Pro{
+	color: #b143d1;
+}
+.chatusername.Mod, .chatusername.ChannelEditor{
+	color: #36e53a;
+}
+.chatusername.Staff{
+	color :#ff8c00;
+}
+.chatusername.Owner{
+	color:black;
+}
