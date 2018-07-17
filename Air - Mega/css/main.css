@@ -34,7 +34,6 @@ html, body{
 .chat{
 	color:black;
 	width:100%;
-	height: 100vh;
 	overflow:hidden;
 	font-size:.8em;
 	font-family: 'Roboto Mono', Verdana, Geneva, sans-serif;
