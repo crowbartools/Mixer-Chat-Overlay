@@ -1,20 +1,11 @@
-
 html, body{
 	background-color:transparent;
 	margin:0px;
 	padding:0px;
 }
-
-@keyframes slideIn {
-    0% {opacity: 0; margin-left: 40%;}
-    60% {margin-left: 0;}
-    70% {margin-left: 1%;}
-    100% {opacity: 1; }
-}
-
 .wrapper{
 	position:relative;
-	font-family: 'Roboto Mono', Verdana, Geneva, sans-serif;
+	font-family: Verdana, Geneva, sans-serif;
 	font-size:14pt;
 	overflow:hidden;
 	color:white;
@@ -36,32 +27,21 @@ html, body{
 	width:100%;
 	overflow:hidden;
 	font-size:.8em;
-	font-family: 'Roboto Mono', Verdana, Geneva, sans-serif;
+	font-family: Verdana, Geneva, sans-serif;
 	position:absolute;
 	bottom:0px;
 	left:0px;
 }
 .chatmessage{
-	background-color:#1b2023;
+	background-color:black;
+	opacity: .8;
+	border-radius: 5px;
 	margin:5px;
-	padding:25px;
-	border-radius: 20px;
-    box-shadow: 0 0 50px rgba(0,0,0,0.2);
-    margin: 10px;
-    animation-name: slideIn;
-    animation-duration: 1.5s;
-    animation-timing-function: ease-in-out;
+	padding:7px;
 }
 .chatusername{
-	font-family: 'Roboto Mono', Verdana, Geneva, sans-serif;
 	display:inline-block;
 	font-weight:bold;
-	
-	font-size: 1.15em;
-	border-bottom:1px solid white;
-	padding: 0px 0px 10px 0px;
-	margin: 0px 0px 10px 0px;
-	border-bottom: 3px solid #38414c;
 }
 .emoticon{
 	position:relative;
@@ -74,4 +54,27 @@ html, body{
 	width:16px;
 	height:16px;
 	display:inline;
+}
+.skill-image img{
+	max-width:30px;
+}
+.elixr-custom-emote img{
+	max-width:30px;
+}
+
+/** Role Colors **/
+.chatusername.User{
+	color: #37aad5;
+}
+.chatusername.Pro{
+	color: #b143d1;
+}
+.chatusername.Mod, .chatusername.ChannelEditor{
+	color: #36e53a;
+}
+.chatusername.Staff{
+	color :#dcb235;
+}
+.chatusername.Owner{
+	color:white;
 }

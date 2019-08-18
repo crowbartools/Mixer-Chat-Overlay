@@ -62,8 +62,6 @@ html, body{
 	padding: 0px 0px 10px 0px;
 	margin: 0px 0px 10px 0px;
 	border-bottom: 3px solid #38414c;
-    width: 50px;
-
 }
 .emoticon{
 	position:relative;
@@ -76,21 +74,4 @@ html, body{
 	width:16px;
 	height:16px;
 	display:inline;
-}
-
-/** Role Colors **/
-.chatusername.User{
-	color: #37aad5;
-}
-.chatusername.Pro{
-	color: #b143d1;
-}
-.chatusername.Mod, .chatusername.ChannelEditor{
-	color: #36e53a;
-}
-.chatusername.Staff{
-	color :#ff8c00;
-}
-.chatusername.Owner{
-	color:white;
 }

@@ -73,20 +73,3 @@ html, body{
 	height:16px;
 	display:inline;
 }
-
-/** Role Colors **/
-.chatusername.User{
-	color: #37aad5;
-}
-.chatusername.Pro{
-	color: #b143d1;
-}
-.chatusername.Mod, .chatusername.ChannelEditor{
-	color: #36e53a;
-}
-.chatusername.Staff{
-	color :#dcb235;
-}
-.chatusername.Owner{
-	color:white;
-}
