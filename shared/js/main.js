@@ -38,6 +38,15 @@ var userID = "";
 var timeToShowChat = getUrlParameter('timer') ? getUrlParameter('timer') : 5000;
 var elixrEmoji = [];
 
+$(function() {
+  let urlParams = new URLSearchParams(window.location.search);
+  let fontSize = urlParams.get("fontSize");
+  if(fontSize != null) {
+    $('.wrapper').attr('style', `font-size: ${fontSize}px !important;`);
+  }
+});
+
+
 if(username != null){
   // Startup
   $.ajax({
