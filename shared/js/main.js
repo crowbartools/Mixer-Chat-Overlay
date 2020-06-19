@@ -77,7 +77,7 @@ if(username != null){
     }
   })
 } else {
-  $("<div class='chatmessage' id='1'>No username provided. Visit crowbartools.com for setup instructions!</div>").appendTo(".chat").hide().fadeIn('fast').delay(5000).fadeOut('fast', function(){ $(this).remove(); });
+  $("<div class='chatmessage' id='1'>No username provided. Visit crowbartools.com for setup instructions!</>").appendTo(".chat").hide().fadeIn('fast').delay(5000).fadeOut('fast', function(){ $(this).remove(); });
 }
 
 
@@ -235,6 +235,22 @@ function elixrEmojiReplacer(text){
   return text;
 }
 
+function getEmotePackDimensions(packUrl) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = function() {
+      resolve({
+        width: this.width,
+        height: this.height
+      })
+    }
+    img.onerror = function() {
+      resolve(null);
+    }
+    img.src = packUrl;
+  });
+}
+
 // Chat Messages
 function chat(evt){
     var evtString = $.parseJSON(evt.data);
@@ -250,7 +266,7 @@ function chat(evt){
       var messageID = eventMessage.id;
       var completeMessage = "";
 
-        $.each(usermessage, function() {
+        $.each(usermessage, async function() {
           var type = this.type;
 
           if (type == "text"){
@@ -259,15 +275,35 @@ function chat(evt){
             var messageText = elixrEmojiReplacer(messageText);
             completeMessage += messageText;
           } else if (type == "emoticon"){
-            var emoticonSource = this.source;
-            var emoticonPack = this.pack;
-            var emoticonCoordX = this.coords.x;
-            var emoticonCoordY = this.coords.y;
-            if (emoticonSource == "builtin"){
-              completeMessage += '<div class="emoticon" style="background-image:url(https:\/\/Mixer.com/_latest/emoticons/'+emoticonPack+'.png); background-position:-'+emoticonCoordX+'px -'+emoticonCoordY+'px; height:24px; width:24px; display:inline-block;"></div>';
-            } else if (emoticonSource == "external"){
-            completeMessage += '<div class="emoticon" style="background-image:url('+emoticonPack+'); background-position:-'+emoticonCoordX+'px -'+emoticonCoordY+'px; height:24px; width:24px; display:inline-block;"></div>';
-            }       
+            const emoticonSource = this.source;
+            const emoticonPack = this.pack;
+            const emoticonCoordX = this.coords.x;
+            const emoticonCoordY = this.coords.y;
+            const emoticonWidth = this.coords.coords.width;
+
+            const packUrl = emoticonSource === "builtin" ? 
+                    `https://mixer.com/_latest/emoticons/${emoticonPack}.png`
+                    : emoticonPack;
+
+                    const size = emoticonWidth > 24 ? 28 : 24;
+
+            const scale = size / emoticonWidth;
+
+            const packDimensions = await getEmotePackDimensions(packUrl);
+            let sheetWidth, sheetHeight;
+            if (packDimensions) {
+                sheetWidth = packDimensions.width;
+                sheetHeight = packDimensions.height;
+            }
+
+            const backgroundSize = scale !== 1 && sheetHeight && sheetWidth ?
+                    `${scale * sheetWidth}px ${scale * sheetHeight}px`
+                    : undefined;
+
+            const styles = `height:${size}px;width:${size}px;background-position:-${scale * emoticonCoordX}px -${scale * emoticonCoordY}px;background-image:url(${packUrl});background-size:${backgroundSize};display:inline-block;`;
+
+            completeMessage += `<div class="emoticon" style="${styles}></div>"`;
+                
           } else if (type == "link"){
             var chatLinkOrig = this.text;
             var chatLink = chatLinkOrig.replace(/(<([^>]+)>)/ig, "");
