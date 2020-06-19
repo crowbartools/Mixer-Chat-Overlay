@@ -252,13 +252,12 @@ function getEmotePackDimensions(packUrl) {
 }
 
 // Chat Messages
-function chat(evt){
+async function chat(evt){
     var evtString = $.parseJSON(evt.data);
     var eventType = evtString.event;
     var eventMessage = evtString.data;
 
     if (eventType == "ChatMessage"){
-      console.log(evt);
       var username = eventMessage.user_name;
       var userrolesSrc = eventMessage.user_roles;
       var userroles = userrolesSrc.toString().replace(/,/g, " ");
@@ -266,26 +265,27 @@ function chat(evt){
       var messageID = eventMessage.id;
       var completeMessage = "";
 
-        $.each(usermessage, async function() {
-          var type = this.type;
+
+      for(let segment of usermessage) {
+        var type = segment.type;
 
           if (type == "text"){
-            var messageTextOrig =  this.data;
+            var messageTextOrig =  segment.data;
             var messageText = escapeHTML(messageTextOrig);
             var messageText = elixrEmojiReplacer(messageText);
             completeMessage += messageText;
           } else if (type == "emoticon"){
-            const emoticonSource = this.source;
-            const emoticonPack = this.pack;
-            const emoticonCoordX = this.coords.x;
-            const emoticonCoordY = this.coords.y;
-            const emoticonWidth = this.coords.coords.width;
+            const emoticonSource = segment.source;
+            const emoticonPack = segment.pack;
+            const emoticonCoordX = segment.coords.x;
+            const emoticonCoordY = segment.coords.y;
+            const emoticonWidth = segment.coords.width;
 
             const packUrl = emoticonSource === "builtin" ? 
                     `https://mixer.com/_latest/emoticons/${emoticonPack}.png`
                     : emoticonPack;
 
-                    const size = emoticonWidth > 24 ? 28 : 24;
+            const size = emoticonWidth > 24 ? 28 : 24;
 
             const scale = size / emoticonWidth;
 
@@ -300,22 +300,25 @@ function chat(evt){
                     `${scale * sheetWidth}px ${scale * sheetHeight}px`
                     : undefined;
 
-            const styles = `height:${size}px;width:${size}px;background-position:-${scale * emoticonCoordX}px -${scale * emoticonCoordY}px;background-image:url(${packUrl});background-size:${backgroundSize};display:inline-block;`;
+            let styles = `height:${size}px;width:${size}px;background-position:-${scale * emoticonCoordX}px -${scale * emoticonCoordY}px;background-image:url(${packUrl});display:inline-block;`;
+            if(backgroundSize) {
+              styles += `background-size:${backgroundSize};`;
+            }
 
-            completeMessage += `<div class="emoticon" style="${styles}></div>"`;
+            completeMessage += `<div class="emoticon" style="${styles}"></div>`;
                 
           } else if (type == "link"){
-            var chatLinkOrig = this.text;
+            var chatLinkOrig = segment.text;
             var chatLink = chatLinkOrig.replace(/(<([^>]+)>)/ig, "");
             completeMessage += chatLink;
           } else if (type == "tag"){
-            var userTag = this.text;
+            var userTag = segment.text;
             completeMessage += userTag;
           } else if (type == "image"){
-            var imageURL = this.url;
+            var imageURL = segment.url;
             completeMessage += '<div class="skill-image" style="height:24px; width:24px; display:inline-block;"><img src="'+imageURL+'"></div>';
           }
-      });
+      }
 
         // Place the completed chat message into the chat area.
         // Fade message in, wait X time, fade out, then remove.
